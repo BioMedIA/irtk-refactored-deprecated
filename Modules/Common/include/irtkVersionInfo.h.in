@@ -1,0 +1,34 @@
+/* The Image Registration Toolkit (IRTK)
+ *
+ * Copyright 2008-2015 Imperial College London
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
+#ifndef _IRTKVERSIONINFO_H
+#define _IRTKVERSIONINFO_H
+
+
+/// Major version number
+#define IRTK_VERSION_MAJOR @IRTK_VERSION_MAJOR@
+
+/// Minor version number
+#define IRTK_VERSION_MINOR @IRTK_VERSION_MINOR@
+
+/// Patch number
+#define IRTK_VERSION_PATCH @IRTK_VERSION_PATCH@
+
+/// Revision of working copy or NULL otherwise
+const char * const IRTK_REVISION = @IRTK_REVISION@;
+
+
+#endif

@@ -1,0 +1,194 @@
+/* The Image Registration Toolkit (IRTK)
+ *
+ * Copyright 2008-2015 Imperial College London
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
+#include <irtkImage.h>
+
+#include <irtkFileToImage.h>
+
+#include <irtkVTK.h>
+
+int irtkFileVTKToImage::CheckHeader(const char *filename)
+{
+  char buffer[255];
+
+  // Create file stream
+  irtkCifstream from;
+
+  // Open new file for reading
+  from.Open(filename);
+
+  // Read header
+  from.ReadAsString(buffer, 255);
+
+  // Close file
+  from.Close();
+
+  // Check header
+  if ((strcmp(buffer, VTK_MAGIC1) != 0) &&
+      (strcmp(buffer, VTK_MAGIC2) != 0) &&
+      (strcmp(buffer, VTK_MAGIC3) != 0)) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+void irtkFileVTKToImage::ReadHeader()
+{
+  char type[255], dummy[255], buffer[255];
+
+  // Initialize
+  this->_type  = IRTK_VOXEL_UNKNOWN;
+  this->_bytes = 0;
+
+  // Read header
+  this->ReadAsString(buffer, 255);
+
+  // Check header
+  if ((strcmp(buffer, VTK_MAGIC1) != 0) &&
+      (strcmp(buffer, VTK_MAGIC2) != 0) &&
+      (strcmp(buffer, VTK_MAGIC3) != 0)) {
+    cerr << this->NameOfClass() << "::Read_Header: Can't read magic number"
+         << buffer << endl;
+    exit(1);
+  }
+
+  // Skip comments
+  this->ReadAsString(buffer, 255);
+
+  // Read file type
+  this->ReadAsString(buffer, 255);
+
+  // Read dataset type
+  this->ReadAsString(buffer, 255);
+
+  // Check whether dataset is a structured points data set
+  if (strcmp(buffer, "DATASET STRUCTURED_POINTS") != 0) {
+    cerr << this->NameOfClass() << "::Read_Header: Data set is not in "
+         << "structured points format - " << buffer << endl;
+    exit(1);
+  }
+
+  // Read image dimensions type
+  this->ReadAsString(buffer, 255);
+
+  // Parse image dimensions
+  sscanf(buffer, "%s %d %d %d", dummy, &this->_attr._x, &this->_attr._y, &this->_attr._z);
+  if (strcmp(dummy, "DIMENSIONS") != 0) {
+    cerr << this->NameOfClass() << "::Read_Header: Can't find image dimensions"
+         << endl;
+  }
+
+  // Read origin
+  this->ReadAsString(buffer, 255);
+
+  double x,y,z;
+  // Parse origin, but ignore
+  sscanf(buffer, "%s %lf %lf %lf", dummy, &x, &y, &z);
+
+  if (strcmp(dummy, "ORIGIN") == 0) {
+
+      this->_attr._xorigin = x;
+      this->_attr._yorigin = y;
+      this->_attr._zorigin = z;
+
+      // Read voxel dimensions
+      this->ReadAsString(buffer, 255);
+
+      // Parse voxel dimensions
+      sscanf(buffer, "%s %lf %lf %lf", dummy, &this->_attr._dx, &this->_attr._dy, &this->_attr._dz);
+      if ((strcmp(dummy, "SPACING") != 0) &&
+          (strcmp(dummy, "ASPECT_RATIO") != 0)) {
+              cerr << this->NameOfClass()
+                  << "::Read_Header: Can't find voxel dimensions" << endl;
+      }
+  } else {
+
+      this->_attr._dx = x;
+      this->_attr._dy = y;
+      this->_attr._dz = z;
+
+      // Read voxel dimensions
+      this->ReadAsString(buffer, 255);
+      // Parse voxel dimensions
+      sscanf(buffer, "%s %lf %lf %lf", dummy, &this->_attr._xorigin, &this->_attr._yorigin, &this->_attr._zorigin);
+      if ((strcmp(dummy, "ORIGIN") != 0) ) {
+              cerr << this->NameOfClass()
+                  << "::Read_Header: Can't find voxel origin" << endl;
+      }
+  }
+
+  this->_attr._xorigin += this->_attr._x*this->_attr._dx*0.5;
+  this->_attr._yorigin += this->_attr._y*this->_attr._dy*0.5;
+  this->_attr._zorigin += this->_attr._z*this->_attr._dz*0.5;
+
+  // Read no. of points
+  this->ReadAsString(buffer, 255);
+
+  // Parse no. of points, but ignore
+  sscanf(buffer, "%s %*d", dummy);
+  if (strcmp(dummy, "POINT_DATA") != 0) {
+    cerr << this->NameOfClass() << "::Read_Header: Can't find no. of points"
+         << endl;
+  }
+
+  // Read voxel type
+  this->ReadAsString(buffer, 255);
+
+  // Parse voxel type
+  sscanf(buffer, "%s %*s %s", dummy, type);
+
+  if (strcmp(dummy, "SCALARS") != 0) {
+    cerr << this->NameOfClass() << "::Read_Header: Can't find voxel type"
+         << endl;
+  }
+  if (strcmp(type, VTK_DATA_CHAR) == 0) {
+    this->_type  = IRTK_VOXEL_CHAR;
+    this->_bytes = 1;
+  }
+  if (strcmp(type, VTK_DATA_U_CHAR) == 0) {
+    this->_type  = IRTK_VOXEL_UNSIGNED_CHAR;
+    this->_bytes = 1;
+  }
+  if (strcmp(type, VTK_DATA_SHORT) == 0) {
+    this->_type  = IRTK_VOXEL_SHORT;
+    this->_bytes = 2;
+  }
+  if (strcmp(type, VTK_DATA_U_SHORT) == 0) {
+    this->_type  = IRTK_VOXEL_UNSIGNED_SHORT;
+    this->_bytes = 2;
+  }
+  if (strcmp(type, VTK_DATA_FLOAT) == 0) {
+    this->_type  = IRTK_VOXEL_FLOAT;
+    this->_bytes = 4;
+  }
+  if (this->_type == IRTK_VOXEL_UNKNOWN) {
+    cerr << this->NameOfClass() << "::Read_Header: Unknown voxel type"
+         << endl;
+  }
+
+  // VTK only supports 3D images
+  this->_attr._t  = 1;
+  this->_attr._dt = 1;
+
+  // Read lookup table but ignore
+  this->ReadAsString(buffer, 255);
+
+  // Calculate data address
+  this->_start = this->Tell();
+}
+
+
