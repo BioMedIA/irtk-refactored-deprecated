@@ -13,3 +13,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+find_package(Doxygen REQUIRED)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in
+               ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+
+add_custom_target(doc ALL
+                  COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile
+                  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                  COMMENT "Generate documentation"
+                  VERBATIM)
+
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
+        DESTINATION ${IRTK_INSTALL_DOCDIR}
+        COMPONENT doc)
