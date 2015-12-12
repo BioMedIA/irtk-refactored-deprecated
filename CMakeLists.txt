@@ -19,7 +19,7 @@ project(IRTK)
 cmake_minimum_required(VERSION 2.8)
 
 option(BUILD_APPLICATIONS "Build applications." ON)
-#option(BUILD_DOCUMENTATION "Build documentation." OFF)
+option(BUILD_DOCUMENTATION "Build documentation." OFF)
 #option(BUILD_PACKAGES "Build packages." OFF)
 #option(BUILD_SHARED_LIBS "Build libraries dynamically (ON) or statically (OFF)" OFF)
 #option(BUILD_TESTING "Build test suite." OFF)
