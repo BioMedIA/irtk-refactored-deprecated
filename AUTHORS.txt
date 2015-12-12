@@ -1,0 +1,20 @@
+﻿Authors of IRTK
+---------------
+
+The purpose of this file is to maintain a list of major contributors to IRTK,
+i.e. people who submitted changes which are considered copyrightable. Other
+contributors are recorded in the accompanying THANKS.txt file.
+
+This file only covers the core IRTK modules. For authorship details regarding
+third-party packages, please check the content of their respective source
+trees.
+
+Daniel Rueckert (initial author)
+Julia Schnabel (initial author)
+Wenzhe Shi (Transformation module, TSFFD registration)
+Maria Murgasova (Segmentation module)
+Paul Aljabar (PolyData module)
+Andreas Schuh (Registration and PolyData module)
+Christian Ledig (Segmentation module)
+Bernhard Kainz (CUDA reconstruction)
+Stefan Pszczolkowski Parraguez (Geometry and Image modules)

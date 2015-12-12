@@ -1,0 +1,28 @@
+Contributors to IRTK
+--------------------
+
+The IRTK was initially written by Daniel Rueckert and Julia Schnabel. Since
+its inception, many people have further contributed to IRTK in many ways,
+including issue reports, bug fixes, feature requests, code enhancements, or
+refactoring efforts.
+
+This file records an exhaustive list of past and present contributors to the
+core of IRTK. Please help with keeping this list up-to-date by contacting us
+if your name has been left off.
+
+Daniel Rueckert
+Julia Schnabel
+Wenzhe Shi
+Maria Murgasova
+Paul Aljabar
+Andreas Schuh
+Ira Ktena
+Kevin Keraudren
+Robin Wolz
+Christian Ledig
+Bernhard Kainz
+Stefan Pszczolkowski Parraguez
+Martin Jantsch
+Jonathan Passerat-Palmbach
+Wenjia Bai
+Ghislain Antony Vaillant
