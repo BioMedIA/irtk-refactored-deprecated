@@ -22,6 +22,7 @@
 using namespace irtk::polydata;
 #endif
 
+#include <memory>
 
 // =============================================================================
 // Help
@@ -430,7 +431,7 @@ int main(int argc, char **argv)
     // Write affine transformation as free-form deformation
     } else if (nonrigid) {
 
-      auto_ptr<irtkFreeFormTransformation3D> ffd;
+      std::unique_ptr<irtkFreeFormTransformation3D> ffd;
       if (diffeomorphic) ffd.reset(BSplineSVFFD(dof, attr, sx, sy, sz));
       else               ffd.reset(BSplineFFD  (dof, attr, sx, sy, sz));
       if (verbose) {
@@ -670,7 +671,7 @@ int main(int argc, char **argv)
 
       } else {
 
-        auto_ptr<irtkFreeFormTransformation3D> ffd;
+        std::unique_ptr<irtkFreeFormTransformation3D> ffd;
         if (diffeomorphic) ffd.reset(new irtkBSplineFreeFormTransformationSV(attr, sx, sy, sz));
         else               ffd.reset(new irtkBSplineFreeFormTransformation3D(attr, sx, sy, sz));
 

@@ -30,6 +30,7 @@
 #include <vtkFloatArray.h>
 #endif
 
+#include <memory>
 
 namespace irtk { namespace data {
 
@@ -116,7 +117,7 @@ int Read(const char *name, double *&data, int *dtype, irtkImageAttributes *attr)
       exit(1);
 #endif // HAS_VTK
     case IMAGE: {
-      auto_ptr<irtkBaseImage> image(irtkBaseImage::New(name));
+      std::unique_ptr<irtkBaseImage> image(irtkBaseImage::New(name));
       if (attr) *attr = image->Attributes();
       if (dtype) *dtype = image->GetDataType();
       n = image->NumberOfVoxels();
@@ -203,7 +204,7 @@ void Write::Process(int n, double *data, bool *)
         cerr << "Cannot write data sequence to file! Length of data sequence changed." << endl;
         exit(1);
       }
-      auto_ptr<irtkImage> image(irtkImage::New(_DataType));
+      std::unique_ptr<irtkImage> image(irtkImage::New(_DataType));
       image->Initialize(_Attributes);
       for (int i = 0; i < n; ++i) image->PutAsDouble(i, data[i]);
       image->Write(_FileName.c_str());

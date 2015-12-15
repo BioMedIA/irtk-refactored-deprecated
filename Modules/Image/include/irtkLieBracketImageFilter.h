@@ -22,6 +22,7 @@
 #include <irtkImage.h>
 #include <irtkImageToImage.h>
 
+#include <memory>
 
 /**
  * Base class for image filters which compute the Lie bracket of two vector fields.
@@ -183,7 +184,7 @@ void liebracket(irtkGenericImage<VoxelType> *ov,
                 irtkGenericImage<VoxelType> *rv, bool usejac = true)
 {
   typedef irtkLieBracketImageFilter<VoxelType> LieBracketFilter;
-  auto_ptr<LieBracketFilter> filter(LieBracketFilter::New(ov, usejac));
+  std::unique_ptr<LieBracketFilter> filter(LieBracketFilter::New(ov, usejac));
   filter->SetInput(0, lv);
   filter->SetInput(1, rv);
   filter->SetOutput(ov);

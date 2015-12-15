@@ -15,7 +15,7 @@
  * limitations under the License. */
 
 #include <irtkCommon.h>
-
+#include <memory>
 
 // =============================================================================
 // Global parallelization options
@@ -31,7 +31,7 @@ int debug_gpu = 0;
 int tbb_debug = 0;
 
 #ifdef HAS_TBB
-auto_ptr<task_scheduler_init> tbb_scheduler;
+std::unique_ptr<task_scheduler_init> tbb_scheduler;
 #endif
 
 // =============================================================================

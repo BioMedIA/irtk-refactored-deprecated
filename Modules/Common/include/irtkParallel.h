@@ -18,6 +18,7 @@
 #define _IRTKPARALLEL_H
 
 #include <iostream>
+#include <memory>
 
 
 // =============================================================================
@@ -79,7 +80,7 @@ using namespace tbb;
 // instance is created and the -threads argument passed on to its initialize
 // method by ParseParallelOption. There should be no task scheduler created/
 // terminated in any of the IRTK libraries functions and classes.
-extern std::auto_ptr<task_scheduler_init> tbb_scheduler;
+extern std::unique_ptr<task_scheduler_init> tbb_scheduler;
 
 // Otherwise, use dummy implementations of TBB classes/functions which allows
 // developers to write parallelizable code as if TBB was available and yet
