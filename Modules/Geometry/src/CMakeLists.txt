@@ -46,10 +46,6 @@ set(IRTK_MODULE_SOURCES irtkArith.cc
                         irtkVector3.cc
                         irtkVector4D.cc)
 
-if(WITH_VTK)
-  list(APPEND IRTK_MODULE_SOURCES irtkVTKFunctions.cc)
-endif()
-
 add_library(${IRTK_MODULE_NAME} ${IRTK_MODULE_SOURCES})
 
 target_link_libraries(${IRTK_MODULE_NAME} Common Image)
