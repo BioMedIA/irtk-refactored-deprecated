@@ -19,7 +19,7 @@
 #include <irtkVelocityToDisplacementField.h>
 #include <irtkGaussianBlurring.h>
 #include <irtkImageToInterpolationCoefficients.h>
-
+#include <memory>
 
 // ===========================================================================
 // Constants
@@ -372,7 +372,7 @@ int main(int argc, char **argv)
 
   // Average displacement fields sampled in specified target image domain
   if (!avgdofs && target_name) {
-    auto_ptr<irtkBaseImage> target(irtkImage::New(target_name));
+    std::unique_ptr<irtkBaseImage> target(irtkImage::New(target_name));
     attr = target->GetImageAttributes();
   // Otherwise, determine common type of local input transformations
   // if a mix of transformations is given, use attributes of first FFD
@@ -381,7 +381,7 @@ int main(int argc, char **argv)
     if (verbose) cout << "Checking type of input transformations...", cout.flush();
     for (size_t i = 0; i < dofin.size(); ++i) {
       if (dofin[i] == identity_name) continue;
-      auto_ptr<irtkTransformation> t(irtkTransformation::New(dofin[i].c_str()));
+      std::unique_ptr<irtkTransformation> t(irtkTransformation::New(dofin[i].c_str()));
       irtkTransformation           *p    = t.get();
       irtkMultiLevelTransformation *mffd = dynamic_cast<irtkMultiLevelTransformation *>(t.get());
       if (mffd) {
@@ -466,7 +466,7 @@ int main(int argc, char **argv)
   for (size_t i = 0; i < dofin.size(); ++i) {
     if (dofin[i] == identity_name) continue;
     // Read transformation from file
-    auto_ptr<irtkTransformation> t(irtkTransformation::New(dofin[i].c_str()));
+    std::unique_ptr<irtkTransformation> t(irtkTransformation::New(dofin[i].c_str()));
     // Determine actual type of transformation
     irtkHomogeneousTransformation   *global     = NULL;
     irtkRigidTransformation         *rigid      = NULL;

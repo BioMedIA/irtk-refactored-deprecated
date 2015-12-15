@@ -30,6 +30,7 @@
 #  include <flann/flann.hpp>
 #endif
 
+#include <memory>
 
 /**
  * Point search structure for establishing point correspondences
@@ -824,7 +825,7 @@ inline vector<int> irtkPointLocator
                    vtkPointSet *dataset2, const vector<int> *sample2, const FeatureList *features2,
                    vector<double> *dist2)
 {
-  auto_ptr<irtkPointLocator> locator(irtkPointLocator::New(dataset2, sample2, features2));
+  std::unique_ptr<irtkPointLocator> locator(irtkPointLocator::New(dataset2, sample2, features2));
   return locator->FindClosestPoint(dataset1, sample1, features1, dist2);
 }
 
@@ -894,7 +895,7 @@ inline vector<vector<int> > irtkPointLocator
                             vtkPointSet *dataset2, const vector<int> *sample2, const FeatureList *features2,
                      vector<vector<double> > *dist2)
 {
-  auto_ptr<irtkPointLocator> locator(irtkPointLocator::New(dataset2, sample2, features2));
+  std::unique_ptr<irtkPointLocator> locator(irtkPointLocator::New(dataset2, sample2, features2));
   return locator->FindClosestNPoints(k, dataset1, sample1, features1, dist2);
 }
 
@@ -965,7 +966,7 @@ inline vector<vector<int> > irtkPointLocator
                                         vtkPointSet *dataset2, const vector<int> *sample2, const FeatureList *features2,
                          vector<vector<double> > *dist2)
 {
-  auto_ptr<irtkPointLocator> locator(irtkPointLocator::New(dataset2, sample2, features2));
+  std::unique_ptr<irtkPointLocator> locator(irtkPointLocator::New(dataset2, sample2, features2));
   return locator->FindPointsWithinRadius(radius, dataset1, sample1, features1, dist2);
 }
 

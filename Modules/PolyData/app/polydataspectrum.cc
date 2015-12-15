@@ -7,6 +7,7 @@
 // =============================================================================
 
 #include <irtkCommon.h>
+#include <memory>
 
 // =============================================================================
 // Help
@@ -298,7 +299,7 @@ int main(int argc, char *argv[])
 
   // Transform first surface by specified transformation
   if (dofin_name) {
-    auto_ptr<irtkTransformation> dof(irtkTransformation::New(dofin_name));
+    std::unique_ptr<irtkTransformation> dof(irtkTransformation::New(dofin_name));
     irtkRegisteredSurface transformed;
     transformed.InputSurface(surface[0]);
     transformed.Transformation(dof.get());
@@ -393,7 +394,7 @@ int main(int argc, char *argv[])
     target.Update();
     source.Update();
 
-    auto_ptr<irtkPointCorrespondence> cmap(irtkPointCorrespondence::New(ctype));
+    std::unique_ptr<irtkPointCorrespondence> cmap(irtkPointCorrespondence::New(ctype));
     cmap->FromTargetToSource(true);
     cmap->FromSourceToTarget(true);
     cmap->Parameter(cparam);

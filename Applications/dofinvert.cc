@@ -15,6 +15,7 @@
  * limitations under the License. */
 
 #include <irtkTransformation.h>
+#include <memory>
 
 void PrintHelp(const char *name)
 {
@@ -32,7 +33,7 @@ int main(int argc, char **argv)
   }
 
   // Read transformation
-  auto_ptr<irtkAffineTransformation> transformation(new irtkAffineTransformation);
+  std::unique_ptr<irtkAffineTransformation> transformation(new irtkAffineTransformation);
   transformation->Read(POSARG(1));
   if (verbose) transformation->Print();
 

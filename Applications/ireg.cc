@@ -32,7 +32,7 @@ using namespace irtk::polydata;
 #include <irtkGenericRegistrationLogger.h>
 #include <irtkGenericRegistrationDebugger.h>
 #include <irtkDilation.h>
-
+#include <memory>
 
 // =============================================================================
 // Version and help
@@ -419,11 +419,11 @@ struct ConcurrentImageReader
   {
     irtkHomogeneousTransformation *lin;
     for (size_t n = re.begin(); n != re.end(); ++n) {
-      auto_ptr<irtkBaseImage> &image = (*_Image)[n];
+      std::unique_ptr<irtkBaseImage> &image = (*_Image)[n];
       if (image.get() == NULL) {
         image.reset(irtkBaseImage::New(_ImageName[n].c_str()));
         if (!IsIdentity(_DoFName[n])) {
-          auto_ptr<irtkTransformation> dof(irtkTransformation::New(_DoFName[n].c_str()));
+          std::unique_ptr<irtkTransformation> dof(irtkTransformation::New(_DoFName[n].c_str()));
           lin = dynamic_cast<irtkHomogeneousTransformation *>(dof.get());
           if (lin) {
             irtkMatrix mat = lin->GetMatrix();
@@ -441,7 +441,7 @@ struct ConcurrentImageReader
   static void Run(const vector<string>             &fname,
                   const vector<string>             &tname,
                   const vector<bool>               &tinv,
-                  vector<auto_ptr<irtkBaseImage> > &image,
+                  vector<std::unique_ptr<irtkBaseImage> > &image,
                   Error                            *error)
   {
     ConcurrentImageReader body;
@@ -460,7 +460,7 @@ private:
   vector<string>                    _ImageName;
   vector<string>                    _DoFName;
   vector<bool>                      _DoFInvert;
-  vector<auto_ptr<irtkBaseImage> > *_Image;
+  vector<std::unique_ptr<irtkBaseImage> > *_Image;
   Error                            *_Error;
 };
 
@@ -492,7 +492,7 @@ public:
           _Error[n] = EmptyPointSet;
         } else {
           if (!IsIdentity(_DoFName[n])) {
-            auto_ptr<irtkTransformation> t(irtkTransformation::New(_DoFName[n].c_str()));
+            std::unique_ptr<irtkTransformation> t(irtkTransformation::New(_DoFName[n].c_str()));
             for (vtkIdType i = 0; i < points->GetNumberOfPoints(); ++i) {
               points->GetPoint(i, p);
               if (_DoFInvert[n]) t->Inverse  (p[0], p[1], p[2]);
@@ -724,10 +724,10 @@ int main(int argc, char **argv)
   // ---------------------------------------------------------------------------
   // Determine number of input images
   vector<double>                   image_times;
-  vector<auto_ptr<irtkBaseImage> > images;
+  vector<std::unique_ptr<irtkBaseImage> > images;
 
   if (image_names.size() == 1) {
-    auto_ptr<irtkBaseImage> sequence(irtkBaseImage::New(image_names[0].c_str()));
+    std::unique_ptr<irtkBaseImage> sequence(irtkBaseImage::New(image_names[0].c_str()));
     const int nframes = sequence->GetT();
     if (nframes < 2) {
       if (verbose > 1) cout << " failed\n" << endl;
@@ -889,7 +889,7 @@ int main(int argc, char **argv)
 
   // ---------------------------------------------------------------------------
   // Read initial transformation
-  auto_ptr<irtkTransformation> dofin;
+  std::unique_ptr<irtkTransformation> dofin;
   if (dofin_name) {
     if (IsIdentity(dofin_name)) dofin.reset(new irtkRigidTransformation());
     else                        dofin.reset(irtkTransformation::New(dofin_name));
@@ -898,7 +898,7 @@ int main(int argc, char **argv)
 
   // ---------------------------------------------------------------------------
   // Read mask which defines domain on which similarity is evaluated
-  auto_ptr<irtkBinaryImage> mask;
+  std::unique_ptr<irtkBinaryImage> mask;
   if (mask_name) {
     mask.reset(new irtkBinaryImage(mask_name));
     registration.Domain(mask.get());

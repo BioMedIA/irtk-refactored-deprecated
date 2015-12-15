@@ -23,7 +23,7 @@
 #include <irtkImageToInterpolationCoefficients.h>
 
 #include "irtkFreeFormTransformationIntegration.h"
-
+#include <memory>
 
 // =============================================================================
 // Integration methods
@@ -750,7 +750,7 @@ double irtkBSplineFreeFormTransformationSV
   } else {    
     double x, y, z, vec[3] = {.0, .0, .0};
 
-    auto_ptr<irtkInterpolateImageFunction> f(irtkInterpolateImageFunction::New(Interpolation_Linear, Extrapolation_NN, &disp));
+    std::unique_ptr<irtkInterpolateImageFunction> f(irtkInterpolateImageFunction::New(Interpolation_Linear, Extrapolation_NN, &disp));
     f->SetInput(&disp);
     f->Initialize();
 

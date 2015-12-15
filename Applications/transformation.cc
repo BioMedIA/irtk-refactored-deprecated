@@ -18,6 +18,7 @@
 #include <irtkFileToImage.h>
 #include <irtkRegionFilter.h>
 #include <irtkTransformation.h>
+#include <memory>
 
 
 // ===========================================================================
@@ -82,7 +83,7 @@ int main(int argc, char **argv)
   // Read image
   irtkFileToImage *inputReader = irtkFileToImage::New(input_name);
   int sourceType = inputReader->GetDataType();
-  auto_ptr<irtkImage> source(inputReader->GetOutput());
+  std::unique_ptr<irtkImage> source(inputReader->GetOutput());
   delete inputReader;
 
   // Parse optional arguments
@@ -155,7 +156,7 @@ int main(int argc, char **argv)
 
   // Apply affine header transformation
   if (dof_name) {
-    auto_ptr<irtkTransformation> t(irtkTransformation::New(dof_name));
+    std::unique_ptr<irtkTransformation> t(irtkTransformation::New(dof_name));
     irtkHomogeneousTransformation *lin = dynamic_cast<irtkHomogeneousTransformation *>(t.get());
     if (lin) {
       irtkMatrix mat = lin->GetMatrix();
@@ -168,7 +169,7 @@ int main(int argc, char **argv)
   }
 
   // Read target image
-  auto_ptr<irtkImage> target;
+  std::unique_ptr<irtkImage> target;
   int targetType = -1;
   if (target_name) {
     irtkFileToImage *targetReader = irtkFileToImage::New(target_name);
@@ -178,14 +179,14 @@ int main(int argc, char **argv)
   }
 
   // Instantiate interpolator
-  auto_ptr<irtkInterpolateImageFunction> interpolator(irtkInterpolateImageFunction::New(interpolation));
+  std::unique_ptr<irtkInterpolateImageFunction> interpolator(irtkInterpolateImageFunction::New(interpolation));
 
   // Initialize output image
   if (target.get()) {
     // Change type of target image or warn about differing output type
     if (sourceType != targetType) {
       if (matchSourceType) {
-        auto_ptr<irtkImage> tmp(irtkImage::New(sourceType));
+        std::unique_ptr<irtkImage> tmp(irtkImage::New(sourceType));
         *tmp = *target;
         target.reset(tmp.release());
         targetType = sourceType;
@@ -196,7 +197,7 @@ int main(int argc, char **argv)
     }
     // Ensure that output image has same number of channels/frames than input
     if (target->T() != source->T()) {
-      auto_ptr<irtkImage> tmp(irtkImage::New(targetType));
+      std::unique_ptr<irtkImage> tmp(irtkImage::New(targetType));
       tmp->Initialize(target->Attributes(), source->T());
       tmp->PutTSize(source->GetTSize());
       for (int l = 0; l < tmp->T(); ++l)
@@ -257,7 +258,7 @@ int main(int argc, char **argv)
   }
 
   // Instantiate image transformation
-  auto_ptr<irtkTransformation> transformation;
+  std::unique_ptr<irtkTransformation> transformation;
   if (dofin_name == NULL || strcmp(dofin_name, "identity") == 0
                          || strcmp(dofin_name, "Identity") == 0
                          || strcmp(dofin_name, "Id")       == 0) {
@@ -269,7 +270,7 @@ int main(int argc, char **argv)
   }
 
   // Create image transformation filter
-  auto_ptr<irtkImageTransformation> imagetransformation(irtkImageTransformation::New(transformation.get()));
+  std::unique_ptr<irtkImageTransformation> imagetransformation(irtkImageTransformation::New(transformation.get()));
 
   imagetransformation->SetInput(source.get(), transformation.get());
   imagetransformation->SetOutput(target.get());
