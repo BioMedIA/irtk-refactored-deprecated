@@ -56,7 +56,7 @@ if(WITH_VTK)
   add_definitions(-DHAS_VTK -DHAVE_VTK)
 endif()
 
-option(WITH_EIGEN "Build with optional support for Eigen." OFF)
+option(WITH_EIGEN "Build with optional support for Eigen." ON)
 if(WITH_EIGEN)
   find_package(Eigen3 REQUIRED)
   if(DEFINED EIGEN3_USE_FILE)
