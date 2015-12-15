@@ -11,10 +11,10 @@ trees.
 
 Daniel Rueckert (initial author)
 Julia Schnabel (initial author)
-Wenzhe Shi (Transformation module, TSFFD registration)
+Wenzhe Shi (Spatio-temporal (3D+t) FFD, Temporal Sparse FFD (TSFFD))
 Maria Murgasova (Segmentation module)
 Paul Aljabar (PolyData module)
-Andreas Schuh (Registration and PolyData module)
+Andreas Schuh (Common, Geometry, Image, Transformation, Registration and PolyData modules)
 Christian Ledig (Segmentation module)
 Bernhard Kainz (CUDA reconstruction)
-Stefan Pszczolkowski Parraguez (Geometry and Image modules)
+Stefan Pszczolkowski Parraguez (image gradient similarities, Statistical FFD)
