@@ -13,6 +13,7 @@
 # Copyright (c) 2006, 2007 Montel Laurent, <montel@kde.org>
 # Copyright (c) 2008, 2009 Gael Guennebaud, <g.gael@free.fr>
 # Copyright (c) 2009 Benoit Jacob <jacob.benoit.1@gmail.com>
+# Copyright (c) 2015 Andreas Schuh <andreas.schuh.84@gmail.com>
 # Redistribution and use is allowed according to the terms of the 2-clause BSD license.
 
 if(NOT Eigen3_FIND_VERSION)
@@ -30,7 +31,7 @@ if(NOT Eigen3_FIND_VERSION)
 endif(NOT Eigen3_FIND_VERSION)
 
 macro(_eigen3_check_version)
-  file(READ "${EIGEN3_INCLUDE_DIR}/Eigen/src/Core/util/Macros.h" _eigen3_version_header)
+  file(READ "${Eigen3_DIR}/Eigen/src/Core/util/Macros.h" _eigen3_version_header)
 
   string(REGEX MATCH "define[ \t]+EIGEN_WORLD_VERSION[ \t]+([0-9]+)" _eigen3_world_version_match "${_eigen3_version_header}")
   set(EIGEN3_WORLD_VERSION "${CMAKE_MATCH_1}")
@@ -48,34 +49,22 @@ macro(_eigen3_check_version)
 
   if(NOT EIGEN3_VERSION_OK)
 
-    message(STATUS "Eigen3 version ${EIGEN3_VERSION} found in ${EIGEN3_INCLUDE_DIR}, "
+    message(STATUS "Eigen3 version ${EIGEN3_VERSION} found in ${Eigen3_DIR}, "
                    "but at least version ${Eigen3_FIND_VERSION} is required")
   endif(NOT EIGEN3_VERSION_OK)
 endmacro(_eigen3_check_version)
 
-if (EIGEN3_INCLUDE_DIR)
+find_path(Eigen3_DIR NAMES signature_of_eigen3_matrix_library
+    PATHS
+    ${CMAKE_INSTALL_PREFIX}/include
+    ${KDE4_INCLUDE_DIR}
+    PATH_SUFFIXES eigen3 eigen
+  )
 
-  # in cache already
+if(Eigen3_DIR)
   _eigen3_check_version()
-  set(EIGEN3_FOUND ${EIGEN3_VERSION_OK})
+endif(Eigen3_DIR)
 
-else (EIGEN3_INCLUDE_DIR)
-
-  find_path(EIGEN3_INCLUDE_DIR NAMES signature_of_eigen3_matrix_library
-      PATHS
-      ${CMAKE_INSTALL_PREFIX}/include
-      ${KDE4_INCLUDE_DIR}
-      PATH_SUFFIXES eigen3 eigen
-    )
-
-  if(EIGEN3_INCLUDE_DIR)
-    _eigen3_check_version()
-  endif(EIGEN3_INCLUDE_DIR)
-
-  include(FindPackageHandleStandardArgs)
-  find_package_handle_standard_args(Eigen3 DEFAULT_MSG EIGEN3_INCLUDE_DIR EIGEN3_VERSION_OK)
-
-  mark_as_advanced(EIGEN3_INCLUDE_DIR)
-
-endif(EIGEN3_INCLUDE_DIR)
-
+set(EIGEN3_INCLUDE_DIR "${Eigen3_DIR}")
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(Eigen3 DEFAULT_MSG EIGEN3_INCLUDE_DIR EIGEN3_VERSION_OK)
