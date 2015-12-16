@@ -43,6 +43,7 @@ if(WITH_VTK)
                      vtkFiltersGeneral
                      vtkFiltersGeometry
                      vtkFiltersParallel
+                     vtkImagingStencil
                      vtkIOGeometry
                      vtkIOLegacy
                      vtkIOPLY
