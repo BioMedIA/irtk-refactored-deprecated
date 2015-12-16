@@ -21,7 +21,20 @@ include_directories("${CMAKE_SOURCE_DIR}/Modules/Geometry/include")
 include_directories("${CMAKE_SOURCE_DIR}/Modules/Image/include")
 include_directories("${CMAKE_SOURCE_DIR}/Modules/Transformation/include")
 
-file(GLOB IRTK_MODULE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cc")
+set(IRTK_MODULE_SOURCES
+  irtkAsConformalAsPossibleVolumeParameterizer.cc
+  irtkEdgeTable.cc
+  irtkHarmonicVolumeParameterizer.cc
+  irtkLinearVolumeParameterizer.cc
+  irtkPolyDataCurvature.cc
+  irtkPolyDataFilter.cc
+  irtkPolyDataRemeshing.cc
+  irtkPolyDataSmoothing.cc
+  irtkPolyDataUtils.cc
+  irtkPolyhedron.cc
+  irtkRemesher.cc
+  irtkVolumeParameterizer.cc
+)
 
 add_library(${IRTK_MODULE_NAME} ${IRTK_MODULE_SOURCES})
 
