@@ -965,6 +965,7 @@ static bool read_next(istream &in, char *buffer, int n, char *&name, char *&valu
     const int len = strlen(name);
     if (name[len-1] != ']') return false;
     // discard [ and leading whitespace characters
+    name[0] = '\0';
     value = name + 1;
     while (*value == ' ' || *value == '\t') ++value;
     // discard ] and trailing whitespace characters
@@ -972,8 +973,7 @@ static bool read_next(istream &in, char *buffer, int n, char *&name, char *&valu
     rtrim(value);
     // identify empty section name
     if (value[0] == '\0') return false;
-    name = "Section header"; // value contains section name
-    return value;
+    return true;
   }
   // find '=' character
   if ((p = strchr(name, '=')) == NULL) return false;
@@ -1000,7 +1000,7 @@ bool irtkGenericRegistrationFilter::Read(istream &from, bool echo)
 
   while (!from.eof()) {
     if (read_next(from, buffer, sz, name, value, no)) {
-      if (strcmp(name, "Section header") == 0) {
+      if (name[0] == '\0') { // section header, value contains section name
         if (echo) cout << (no > 0 ? "\n" : "") << "[ " << value << " ]" << endl;
         level = -1;
         prefix.clear();
