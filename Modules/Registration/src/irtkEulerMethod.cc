@@ -79,16 +79,15 @@ public:
 /// Compute displacements from velocities and temporal integration step length
 class ComputeDisplacements
 {
-  irtkEulerMethod *_Optimizer;
-  vtkDataArray    *_Velocity;
-  double          *_Displacement;
-  double           _StepLength;
+  vtkDataArray *_Velocity;
+  double       *_Displacement;
+  double        _StepLength;
 
 public:
 
-  ComputeDisplacements(irtkEulerMethod *obj, vtkDataArray *v, double dt, double *d)
+  ComputeDisplacements(vtkDataArray *v, double dt, double *d)
   :
-    _Optimizer(obj), _Velocity(v), _Displacement(d), _StepLength(dt)
+    _Velocity(v), _Displacement(d), _StepLength(dt)
   {}
 
   void operator ()(const blocked_range<int> &re) const
@@ -290,7 +289,7 @@ double irtkEulerMethod::Run()
     if (fequal(max_delta, .0)) break;
 
     // Move points of surface model
-    ComputeDisplacements mul(this, velocity, _StepLength / max_delta, _Displacement);
+    ComputeDisplacements mul(velocity, _StepLength / max_delta, _Displacement);
     parallel_for(blocked_range<int>(0, _Model->NumberOfPoints()), mul);
     _Model->EnforceHardConstraints(_Displacement);
     _Model->SmoothGradient(_Displacement);
