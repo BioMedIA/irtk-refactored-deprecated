@@ -132,5 +132,41 @@ void irtkEdgeTable::Initialize(vtkDataSet *mesh)
   IRTK_DEBUG_TIMING(5, "initialization of edge table");
 }
 
+// -----------------------------------------------------------------------------
+void irtkEdgeTable::GetAdjacentPoints(vtkPolyData *mesh, int ptId, vtkIdList *ids)
+{
+  unsigned short  ncells;
+  int             numCellEdges, numEdgePts;
+  vtkIdType      *cells, ptId1, ptId2;
+  vtkCell        *cell, *edge;
+
+  ids->Reset();
+  mesh->GetPointCells(ptId, ncells, cells);
+
+  for (unsigned short i = 0; i < ncells; ++i) {
+    cell = mesh->GetCell(cells[i]);
+    numCellEdges = cell->GetNumberOfEdges();
+    for (int edgeId = 0; edgeId < numCellEdges; ++edgeId) {
+      edge = cell->GetEdge(edgeId);
+      if (edge->IsLinear()) {
+        numEdgePts = edge->GetNumberOfPoints();
+        if (numEdgePts > 1) {
+          ptId1 = edge->PointIds->GetId(0);
+          for (int i = 1; i < numEdgePts; ++i, ptId1 = ptId2) {
+            ptId2 = edge->PointIds->GetId(i);
+            if (ptId1 == ptId) {
+              ids->InsertUniqueId(ptId2);
+            } else if (ptId2 == ptId) {
+              ids->InsertUniqueId(ptId1);
+            }
+          }
+        }
+      } else {
+        cerr << "WARNING: irtkEdgeTable::GetAdjacentPoints: Only linear edges supported" << endl;
+      }
+    }
+  }
+}
+
 
 } } // namespace irtk::polydata

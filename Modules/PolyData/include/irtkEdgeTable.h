@@ -82,6 +82,9 @@ public:
 
   /// Get start and end pointer into list of adjacent nodes (thread-safe)
   void GetAdjacentPoints(int, const int *&, const int *&) const;
+
+  /// Get list of adjacent points for a point of the given surface mesh
+  static void GetAdjacentPoints(vtkPolyData *, int, vtkIdList *);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
