@@ -25,6 +25,7 @@
 #include <vtkCellData.h>
 #include <vtkDataArray.h>
 #include <vtkIdTypeArray.h>
+#include <vtkIdList.h>
 
 #include <irtkPolyDataUtils.h>
 using namespace irtk::polydata;

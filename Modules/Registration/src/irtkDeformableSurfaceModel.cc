@@ -19,6 +19,7 @@
 #include <irtkPolyDataRemeshing.h>
 #include <irtkSurfaceCollisions.h>
 
+#include <vtkPointData.h>
 #include <vtkCellData.h>
 
 #include <irtkPolyDataUtils.h>

@@ -18,6 +18,8 @@
 
 #include <irtkDeformableSurfaceModel.h>
 
+#include <vtkPointData.h>
+
 
 // =============================================================================
 // Auxiliary functors

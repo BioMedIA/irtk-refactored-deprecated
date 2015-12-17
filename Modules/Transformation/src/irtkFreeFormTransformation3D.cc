@@ -18,6 +18,7 @@
 #  include <vtkSmartPointer.h>
 #  include <vtkPoints.h>
 #  include <vtkIdTypeArray.h>
+#  include <vtkPolyData.h>
 #  include <vtkOctreePointLocator.h>
 #endif
 

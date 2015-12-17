@@ -25,6 +25,7 @@
 #include <vtkPoints.h>
 #include <vtkShortArray.h>
 #include <vtkFloatArray.h>
+#include <vtkPointData.h>
 #include <vtkStructuredGrid.h>
 #include <vtkXMLStructuredGridWriter.h>
 #include <irtkPolyDataUtils.h>

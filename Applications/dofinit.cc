@@ -18,6 +18,7 @@
 #include <irtkPointSamples.h>
 
 #ifdef HAS_VTK
+#include <vtkPointData.h>
 #include <irtkPolyDataUtils.h>
 using namespace irtk::polydata;
 #endif
