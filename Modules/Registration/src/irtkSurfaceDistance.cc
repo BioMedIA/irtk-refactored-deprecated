@@ -17,6 +17,7 @@
 #include <vtkSmartPointer.h>
 #include <vtkFloatArray.h>
 #include <vtkCellArray.h>
+#include <vtkPointData.h>
 #include <vtkVertex.h>
 
 #include <irtkSurfaceDistance.h>
