@@ -31,6 +31,12 @@ include(IRTKBuildDeps)
 include(IRTKInstallDirs)
 include(IRTKVersion)
 
+include(TestBigEndian)
+test_big_endian(SYSTEM_IS_BIG_ENDIAN)
+if(SYSTEM_IS_BIG_ENDIAN)
+  add_definitions(-DWORDS_BIGENDIAN)
+endif()
+
 add_subdirectory(Modules)
 
 if(BUILD_APPLICATIONS)
