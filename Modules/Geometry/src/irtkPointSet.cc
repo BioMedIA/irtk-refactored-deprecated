@@ -20,6 +20,7 @@
 
 #include <vtkSmartPointer.h>
 #include <vtkPoints.h>
+#include <vtkPointData.h>
 #include <vtkPointSet.h>
 #include <vtkPolyDataReader.h>
 #include <vtkXMLGenericDataObjectReader.h>
