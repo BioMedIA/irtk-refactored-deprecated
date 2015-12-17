@@ -40,16 +40,6 @@ template <class VoxelType> irtkModeFilter<VoxelType>::~irtkModeFilter(void)
 {
 }
 
-template <class VoxelType> bool irtkModeFilter<VoxelType>::RequiresBuffering(void)
-{
-  return true;
-}
-
-template <class VoxelType> const char *irtkModeFilter<VoxelType>::NameOfClass()
-{
-  return "irtkModeFilter";
-}
-
 template <class VoxelType> void irtkModeFilter<VoxelType>::Initialize()
 {
   // Do the initial set up

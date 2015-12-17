@@ -26,16 +26,12 @@
  * Assign to each voxel, the modal label of those within a neighbourhood.
  */
 
-template <class VoxelType> class irtkModeFilter : public irtkImageToImage<VoxelType>
+template <class VoxelType>
+class irtkModeFilter : public irtkImageToImage<VoxelType>
 {
+  irtkImageFilterMacro(irtkModeFilter);
 
 protected:
-
-  /// Returns whether the filter requires buffering
-  virtual bool RequiresBuffering();
-
-  /// Returns the name of the class
-  virtual const char *NameOfClass();
 
   /// Initialize the filter
   virtual void Initialize();
