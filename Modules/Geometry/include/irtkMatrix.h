@@ -554,6 +554,7 @@ inline double &irtkMatrix::operator()(int i)
 #ifndef NO_BOUNDS
   } else {
     cerr << "irtkMatrix::operator(int): index out of range ";
+    exit(1);
   }
 #endif
 }
@@ -574,6 +575,7 @@ inline double &irtkMatrix::operator()(int r, int c)
 #ifndef NO_BOUNDS
   } else {
     cerr << "irtkMatrix::operator(int, int): index out of range ";
+    exit(1);
   }
 #endif
 }
