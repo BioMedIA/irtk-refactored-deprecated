@@ -18,6 +18,13 @@ project(IRTK)
 
 cmake_minimum_required(VERSION 2.8)
 
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Setting build type to 'Release' as none was specified.")
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build." FORCE)
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
+               STRINGS "None" "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+endif()
+
 option(BUILD_APPLICATIONS "Build applications." ON)
 option(BUILD_DOCUMENTATION "Build documentation." OFF)
 #option(BUILD_PACKAGES "Build packages." OFF)
