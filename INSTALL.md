@@ -59,3 +59,12 @@ By default, the installation paths for the different components of IRTK follows 
   - Other architecture independent data in their respective subdirectory under `share`.
 
 These paths can be individually overridden using the corresponding `IRTK_INSTALL_*DIR` parameters.
+
+## Known issues
+
+### Build with the system VTK on Ubuntu 14.04
+
+It is not possible to build IRTK from source using the system VTK available on Ubuntu 14.04. The packaged version of VTK (6.0.0) does not work with C++11 projects and the fix for it only landed in subsequent versions. A separate build of VTK should be used instead and the location of its configuration file (`VTKConfig.cmake`) should be specified using the `VTK_DIR` variable:
+```
+cmake -DWITH_VTK=ON -DVTK_DIR=${VTK_CMAKE_DIRECTORY}
+```
