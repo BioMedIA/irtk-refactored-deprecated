@@ -38,6 +38,10 @@ include(IRTKBuildDeps)
 include(IRTKInstallDirs)
 include(IRTKVersion)
 
+if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
+  add_definitions(-DNO_BOUNDS)
+endif()
+
 include(TestBigEndian)
 test_big_endian(SYSTEM_IS_BIG_ENDIAN)
 if(SYSTEM_IS_BIG_ENDIAN)
