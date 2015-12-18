@@ -28,8 +28,7 @@ set(IRTK_MODULE_SOURCES irtkBSpline.cc
                         irtkPath.cc
                         irtkProfiling.cc
                         irtkSinc.cc
-                        irtkTerminal.cc
-                        irtkZLib.cc)
+                        irtkTerminal.cc)
 
 if(WITH_MATLAB)
   list(APPEND IRTK_MODULE_SOURCES irtkMatlab.cc)

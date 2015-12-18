@@ -18,8 +18,9 @@
 #define _IRTKCIFSTREAM_H
 
 #include <irtkObject.h>
-#include <irtkZLib.h>
-
+#ifdef HAS_ZLIB
+#include <zlib.h>
+#endif
 
 /**
  * Class for reading (compressed) file streams.

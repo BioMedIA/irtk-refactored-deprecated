@@ -18,7 +18,9 @@
 #define _IRTKCOFSTREAM_H
 
 #include <irtkObject.h>
-#include <irtkZLib.h>
+#ifdef HAS_ZLIB
+#include <zlib.h>
+#endif
 
 
 /**

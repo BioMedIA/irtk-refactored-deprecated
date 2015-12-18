@@ -23,7 +23,6 @@
 #  include <irtkWindows.h>
 #endif
 #include <irtkCxxLib.h>
-#include <irtkZLib.h>
 #include <irtkObject.h>
 #include <irtkVersion.h>
 #include <irtkObserver.h>
