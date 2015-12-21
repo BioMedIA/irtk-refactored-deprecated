@@ -16,10 +16,10 @@
 
 set(IRTK_MODULE_OUTPUT_NAME "irtk${IRTK_MODULE_NAME}")
 
-include_directories("${CMAKE_SOURCE_DIR}/Modules/Common/include")
-include_directories("${CMAKE_SOURCE_DIR}/Modules/Geometry/include")
-include_directories("${CMAKE_SOURCE_DIR}/Modules/Image/include")
-include_directories("${CMAKE_SOURCE_DIR}/Modules/Transformation/include")
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/Modules/Common/include")
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/Modules/Geometry/include")
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/Modules/Image/include")
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/Modules/Transformation/include")
 
 set(IRTK_MODULE_SOURCES
   irtkAsConformalAsPossibleVolumeParameterizer.cc
