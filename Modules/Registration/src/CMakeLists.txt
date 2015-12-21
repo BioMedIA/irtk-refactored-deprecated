@@ -17,10 +17,10 @@
 set(IRTK_MODULE_NAME "Registration")
 set(IRTK_MODULE_OUTPUT_NAME "irtk${IRTK_MODULE_NAME}")
 
-include_directories("${CMAKE_SOURCE_DIR}/Modules/Common/include")
-include_directories("${CMAKE_SOURCE_DIR}/Modules/Geometry/include")
-include_directories("${CMAKE_SOURCE_DIR}/Modules/Image/include")
-include_directories("${CMAKE_SOURCE_DIR}/Modules/Transformation/include")
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/Modules/Common/include")
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/Modules/Geometry/include")
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/Modules/Image/include")
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/Modules/Transformation/include")
 
 set(IRTK_MODULE_SOURCES irtkAdaptiveLineSearch.cc
                         irtkConjugateGradientDescent.cc
@@ -104,7 +104,7 @@ endif()
 add_library(${IRTK_MODULE_NAME} ${IRTK_MODULE_SOURCES})
 
 if(WITH_VTK)
-  include_directories("${CMAKE_SOURCE_DIR}/Modules/PolyData/include")
+  include_directories(BEFORE "${CMAKE_SOURCE_DIR}/Modules/PolyData/include")
   target_link_libraries(${IRTK_MODULE_NAME} PolyData ${VTK_LIBRARIES})
 endif()
 

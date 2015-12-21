@@ -26,6 +26,6 @@ install(FILES ${IRTK_MODULE_HEADERS}
         DESTINATION "${IRTK_MODULE_INSTALL_INCLUDEDIR}"
         COMPONENT dev)
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
+include_directories(BEFORE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 add_subdirectory(src)
